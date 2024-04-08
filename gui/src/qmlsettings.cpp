@@ -312,6 +312,8 @@ QStringList QmlSettings::availableDecoders() const
         "videotoolbox",
 #elif defined(Q_OS_WIN)
         "d3d11va",
+        "cuda",
+        "qsv",
 #endif
     };
     QStringList out = {"none"};
