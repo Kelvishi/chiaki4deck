@@ -33,6 +33,7 @@ typedef struct chiaki_stream_connection_t
 	ChiakiAudioReceiver *audio_receiver;
 	ChiakiVideoReceiver *video_receiver;
 	ChiakiAudioReceiver *haptics_receiver;
+	double packet_loss_max;
 
 	ChiakiFeedbackSender feedback_sender;
 	ChiakiCongestionControl congestion_control;
@@ -66,13 +67,13 @@ typedef struct chiaki_stream_connection_t
 	double measured_bitrate;
 } ChiakiStreamConnection;
 
-CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_init(ChiakiStreamConnection *stream_connection, ChiakiSession *session);
+CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_init(ChiakiStreamConnection *stream_connection, ChiakiSession *session, double packet_loss_max);
 CHIAKI_EXPORT void chiaki_stream_connection_fini(ChiakiStreamConnection *stream_connection);
 
 /**
  * Run stream_connection synchronously
  */
-CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_run(ChiakiStreamConnection *stream_connection);
+CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_run(ChiakiStreamConnection *stream_connection, chiaki_socket_t *socket);
 
 CHIAKI_EXPORT ChiakiErrorCode stream_connection_send_toggle_mute_direct_message(ChiakiStreamConnection *stream_connection, bool muted);
 /**

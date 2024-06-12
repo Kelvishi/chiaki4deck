@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Controls.Material
 
 TextField {
     property bool firstInFocusChain: false
@@ -13,6 +14,7 @@ TextField {
 
     Keys.onPressed: (event) => {
         switch (event.key) {
+        case Qt.Key_Left:
         case Qt.Key_Up:
             if (!firstInFocusChain && readOnly) {
                 let item = nextItemInFocusChain(false);
@@ -21,6 +23,7 @@ TextField {
                 event.accepted = true;
             }
             break;
+        case Qt.Key_Right:
         case Qt.Key_Down:
             if (!lastInFocusChain && readOnly) {
                 let item = nextItemInFocusChain();

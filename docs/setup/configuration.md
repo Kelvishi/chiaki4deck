@@ -261,7 +261,7 @@ Here are different settings you can use for Chiaki/`chiaki4deck` depending on yo
 
 2. Adjust the settings to your preferences. 
 
-    1. **General Settings** for Steam Deck
+    1. **General Settings**
 
         ![General Settings](images/MainSettings.png)
 
@@ -283,23 +283,23 @@ Here are different settings you can use for Chiaki/`chiaki4deck` depending on yo
             
             If you prefer, you can also use `Enter Sleep Mode` to automatically put your PlayStation console to sleep as soon as you close your session with ++ctrl+q++
 
-    2. **Audio/WiFi Settings** for Steam Deck
+    2. **Audio/WiFi Settings**
 
         ![Audio/Wifi Settings](images/AudioSettings.png)
     
-    3. Below are the **Video Settings** you'll want to try first with your PlayStation console (choose the **PS5/1080p HDR** tab if you have a PS5 connected to a HDR TV/monitor ([see HDR section below for more details](#hdr-high-dynamic-range)), **PS5/1080p** if you have a PS5 not connected to an HDR TV/monitor, and **PS4/720p** if you have a PS4). If you are having issues with your PS5 connection, please try the **PS4/720p** settings with your PS5 since they require significantly less bandwidth from your wireless router.
+    3. **Video Settings**
 
-    === "PS5/1080P HDR"
+        ![Video Settings](images/VideoSettings.png)
 
-        Stream output can be up to 1080p with [HDR](#hdr-high-dynamic-range). Here are the settings that are currently working well for me. This results in a native-like experience for most games on my network/setup.
+    4. **Stream Settings**
 
-        ![1080p Settings](images/1080P_SettingsHDR.png)
+        (choose the **PS5 HDR** tab if you have a PS5 connected to a HDR TV/monitor ([see HDR section below for more details](#hdr-high-dynamic-range)), **PS5** if you have a PS5 not connected to an HDR TV/monitor, and **PS4** if you have a PS4). If you are having issues with your PS5 connection, please try switching to 720P following with its default bitrate of 10,000 with your PS5 since that requires significantly less bandwidth from your wireless router.
 
-    === "PS5/1080P"
+    === "PS5 HDR"
 
-        Stream output can be up to 1080p. Here are the settings that are currently working well for me. This results in a native-like experience for most games on my network/setup.
+        Stream output with [HDR](#hdr-high-dynamic-range). This are the recommended PS5 settings for a device that supports HDR such as the Steam Deck OLED.
 
-        ![1080p Settings](images/1080P_Settings.png)
+        ![PS5 HDR Settings](images/PS5_SettingsHDR.png)
 
         ???+ Question "Why 1080p if the Steam Deck is only 800p?"
 
@@ -307,11 +307,23 @@ Here are different settings you can use for Chiaki/`chiaki4deck` depending on yo
             
             However, if you are having issues with your wireless connection (i.e choppy audio, flashes in your video, or lag) while playing, then please use 720p instead. The gains you get from 1080p are nice, but aren't worth having a bad connection.
 
-    === "PS4/720P"
+    === "PS5"
 
-        For PS4, the stream is limited to 720p. Using the defaults for most values works well here, resulting in native-like (albeit w/ a diminished resolution) experience for most games on my network/setup.
+        These are the recommended PS5 settings for a device that doesn't support HDR like the ROG Ally.
 
-        ![720p Settings](images/720P_Settings.png)
+        ![1080p Settings](images/PS5_SettingsSDR.png)
+
+        ???+ Question "Why 1080p if the Steam Deck is only 800p?"
+
+            Using 1080p results in a better picture for me than 720p. The biggest factor in this seems to be [chroma-sub sampling](https://www.phonearena.com/news/Did-you-know-4K-vs-1080p-chroma-sub-sampling-and-why-you-should-record-in-4K-even-if-your-TV-does-not-support-it-yet_id61878){target="_blank" rel="noopener"}. In simple terms, the colors for an image are compressed and so you get a much lower resolution of color data than your image resolution. This means a 1080p image (with a high bitrate) will have more color data than a 720p image even if the image resolution itself ends up being 720p (since the color resolution will be higher than the equivalent 720p picture's color resolution). This results in an image that has more pop to it. Thus, I recommend streaming at 1080p if you have the bandwidth (good enough wireless router).
+            
+            However, if you are having issues with your wireless connection (i.e choppy audio, flashes in your video, or lag) while playing, then please use 720p instead. The gains you get from 1080p are nice, but aren't worth having a bad connection.
+
+    === "PS4"
+
+        This is the recommended setting for a PS4. If you have a PS4 pro you can use 1080P instead.
+
+        ![PS4 Settings](images/PS4_Settings.png)
 
 ### HDR (High Dynamic Range)
 
@@ -402,23 +414,25 @@ To fix these issues, try the following:
 
 1. If you are not using the settings listed in [Choosing Your Remote Play Settings](#choosing-your-remote-play-settings), try with those settings and see if that fixes it for you. The biggest of these is using a HW Decoder option for your system which should help significantly.
 
-2. Switch to **720p** from 1080p
+2. If you are on Steam Deck OLED and you are using the Steam Deck after waking up from sleep, please trying turning the wifi off and then back on in the Steam Deck settings and see if this improves your performance (this is likely due to a WiFi driver issue with the Steam Deck OLED on certain networks so can't be fixed by Chiaki4deck)
+
+3. Switch to **720p** from 1080p
 
     **720p** requires less bandwidth than 1080p. This will help if your wireless connection is the problem, especially since it's very easy to do. This can fix video artifacts (white / green flashes) and audio choppiness (both results of connection problems).
 
-3. Try **short preamble**
+4. Try **short preamble**
 
     If you are still having trouble (I didn’t need this but it can help in general and helped significantly improve performance for other streaming services such as Game Pass on my Steam Deck), try using using [short preamble instead of long preamble](https://www.interline.pl/Information-and-Tips/Preamble-Type-Short-Or-Long){target="_blank" rel="noopener"} in your router settings. You need to change this directly in your router settings for the given network and can do it per network if you set up more than one. This is incompatible with old devices (using wifi b/g instead of n or ac). Devices from 2011 and newer are required by law to support it and so will definitely work. Older devices may or may not support it depending on if they have either n or ac wireless support. Short preamble helps the $5GHz$ connection for devices that support it (essentially anything that’s connecting on a $5GHz$ network should use it). For streaming, you can set up one network that uses short for your newer devices ($5GHz$ network for me) and one with long for older devices ($2.4 GHz$ network for me since older devices don’t support $5GHz$ anyway). My connection worked fine with long preamble on a $2.4 GHz$ network for Chiaki but short (and a $5GHz$ network for that matter) works better in general for devices that support it and has helped others using Chiaki as well as me to help reduce Game Pass streaming lag (which is still much worse than Chiaki and not close to native, but works well for games that don’t require fast or moderately fast reaction times).
 
-4. For specific game issues, change game resolution settings
+5. For specific game issues, change game resolution settings
 
     For example, the game may be set to 4k / resolution mode even though it's only streaming at 1080p or even 720p. Additionally, it may be using HDR (which the Steam Deck screen doesn't support). Switching these settings off on a game level results in less processing power used on the game and thus more left over for streaming as well as hitting a higher framerate. For example, I switched `Ghost of Tsushima` from resolution mode to performance mode and noticed that the occasional performance problems I was experiencing evaporated and the visual quality became much more stable due to the lack of occasional stutters. It went from being playable but a noticeable downgrade to indistinguishable from native.
 
-5. **Turn off VSync** or the equivalent in games that use it
+6. **Turn off VSync** or the equivalent in games that use it
     
     VSync should only be enabled on the client side while streaming and having it enabled in the game itself can cause issues since it requires some extra overhead and can't actually sync with your screen if you're streaming the game. This resulted in issues with white flashes for me while playing Genshin Impact and Sekiro. When I turned off VSync in the Genshin Impact settings, these flashes (which had happened multiple times a minute with VSync on) disappeared. This affects only a small number of games, but is something to watch out for if you randomly have an issue with one game while others run well with Chiaki/`chiaki4deck`.
 
-6. Switch framerate to **30fps**
+7. Switch framerate to **30fps**
 
     **30fps** requires less bandwidth than **60fps**. This will help if your wireless connection is the problem, especially since it's very easy to do. This can fix video artifacts (white / green flashes) and audio choppiness (both results of connection problems). I put this last because it is the biggest performance downgrade and most of the time you don't need to do this. However, switching to 30fps / 720p at the default settings is the most surefire way to fix connection issues and a last resort if the methods with virtually no downsides don't do the trick.
 
@@ -426,4 +440,4 @@ To fix these issues, try the following:
 
 !!! Info "Chiaki/`chiaki4deck` Outside of your Home Network"
     
-    You can also open up ports to connect from the Internet, but the performance will not be as good, with increased input lag being the most noticeable downgrade. In this scenario, your connection will depend on both the Internet connection of your PlayStation console via the router and the Internet connection of your computer via your location (internet speeds themselves will apply). The farther away (more hops from your router) you get, the worse the performance will get. If you are still in the same state, it will likely still be relatively good. However, if you go cross-country or something like that, it can degrade significantly. Nevertheless, it can be very convenient to use while traveling, especially when playing less timing intensive games (i.e., games that would play well via cloud streaming). Setup is covered in the next [remote connection section](remoteconnection.md){target="_blank" rel="noopener"}.
+    You can also either the remote connection via PSN or open up ports to connect from the Internet, but the performance will not be as good, with increased input lag being the most noticeable downgrade. In this scenario, your connection will depend on both the Internet connection of your PlayStation console via the router and the Internet connection of your computer via your location (internet speeds themselves will apply). The farther away (more hops from your router) you get, the worse the performance will get. If you are still in the same state, it will likely still be relatively good. However, if you go cross-country or something like that, it can degrade significantly. Nevertheless, it can be very convenient to use while traveling, especially when playing less timing intensive games (i.e., games that would play well via cloud streaming). Setup is covered in the [remote connection section](remoteconnection.md){target="_blank" rel="noopener"}.

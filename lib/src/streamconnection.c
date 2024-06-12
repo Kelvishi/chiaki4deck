@@ -59,10 +59,11 @@ static ChiakiErrorCode stream_connection_send_streaminfo_ack(ChiakiStreamConnect
 static void stream_connection_takion_av(ChiakiStreamConnection *stream_connection, ChiakiTakionAVPacket *packet);
 static ChiakiErrorCode stream_connection_send_heartbeat(ChiakiStreamConnection *stream_connection);
 
-CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_init(ChiakiStreamConnection *stream_connection, ChiakiSession *session)
+CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_init(ChiakiStreamConnection *stream_connection, ChiakiSession *session, double packet_loss_max)
 {
 	stream_connection->session = session;
 	stream_connection->log = session->log;
+	stream_connection->packet_loss_max = packet_loss_max;
 
 	stream_connection->ecdh_secret = NULL;
 	stream_connection->gkcrypt_remote = NULL;
@@ -132,20 +133,24 @@ static bool state_finished_cond_check(void *user)
 	return stream_connection->state_finished || stream_connection->should_stop || stream_connection->remote_disconnected;
 }
 
-CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_run(ChiakiStreamConnection *stream_connection)
+CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_run(ChiakiStreamConnection *stream_connection, chiaki_socket_t *socket)
 {
 	ChiakiSession *session = stream_connection->session;
 	ChiakiErrorCode err;
 
 	ChiakiTakionConnectInfo takion_info;
 	takion_info.log = stream_connection->log;
-	takion_info.sa_len = session->connect_info.host_addrinfo_selected->ai_addrlen;
-	takion_info.sa = malloc(takion_info.sa_len);
-	if(!takion_info.sa)
-		return CHIAKI_ERR_MEMORY;
-	memcpy(takion_info.sa, session->connect_info.host_addrinfo_selected->ai_addr, takion_info.sa_len);
-	err = set_port(takion_info.sa, htons(STREAM_CONNECTION_PORT));
-	assert(err == CHIAKI_ERR_SUCCESS);
+	takion_info.close_socket = true;
+	if(!socket)
+	{
+		takion_info.sa_len = session->connect_info.host_addrinfo_selected->ai_addrlen;
+		takion_info.sa = malloc(takion_info.sa_len);
+		if(!takion_info.sa)
+			return CHIAKI_ERR_MEMORY;
+		memcpy(takion_info.sa, session->connect_info.host_addrinfo_selected->ai_addr, takion_info.sa_len);
+		err = set_port(takion_info.sa, htons(STREAM_CONNECTION_PORT));
+		assert(err == CHIAKI_ERR_SUCCESS);
+	}
 	takion_info.ip_dontfrag = false;
 
 	takion_info.enable_crypt = true;
@@ -190,8 +195,10 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_run(ChiakiStreamConnectio
 	stream_connection->state = STATE_TAKION_CONNECT;
 	stream_connection->state_finished = false;
 	stream_connection->state_failed = false;
-	err = chiaki_takion_connect(&stream_connection->takion, &takion_info);
-	free(takion_info.sa);
+	err = chiaki_takion_connect(&stream_connection->takion, &takion_info, socket);
+	if(!socket)
+		free(takion_info.sa);
+
 	if(err != CHIAKI_ERR_SUCCESS)
 	{
 		CHIAKI_LOGE(session->log, "StreamConnection connect failed");
@@ -199,7 +206,7 @@ CHIAKI_EXPORT ChiakiErrorCode chiaki_stream_connection_run(ChiakiStreamConnectio
 		goto err_video_receiver;
 	}
 
-	err = chiaki_congestion_control_start(&stream_connection->congestion_control, &stream_connection->takion, &stream_connection->packet_stats);
+	err = chiaki_congestion_control_start(&stream_connection->congestion_control, &stream_connection->takion, &stream_connection->packet_stats, stream_connection->packet_loss_max);
 	if(err != CHIAKI_ERR_SUCCESS)
 	{
 		CHIAKI_LOGE(session->log, "StreamConnection failed to start Congestion Control");

@@ -61,6 +61,34 @@ In order to update your already installed `chiaki4deck` to the newest version, e
 
 ## Releases (Newest First)
 
+### 1.7.2
+
+Provides unique remote and local Stream Settings for each console (PS4/PS5)
+
+- Separate Local and Remote and PS4/PS5 settings so you can set appropriate settings for each type of connection
+- Enable more network types to work with remote connection via PSN (Note: some can only be made to work a % of the time due to limitations with remote play imposed by Sony)
+- Export/import option for settings to transfer across devices/platforms
+- Adds `auto` hw decoder option which is now the default. It chooses the best decoder for your platform from the available decoders
+- Make Chiaki4deck ipv6 compatible (ipv6 not yet supported by remote play on the console [i.e., in Sony's PlayStation firmware] so can't be used yet)
+
+### 1.7.1
+
+Improves + adds PS4 support to remote connection via PSN
+
+- remote connection via PSN now supports PS4 consoles
+- remote connection via PSN now supports more network types
+
+### 1.7.0
+
+Enables remote connection via PSN
+
+- Remote connection via PSN now available without the need for port forwarding ([see remote connection docs for more details](../setup/remoteconnection.md#remote-connection-via-psn){target="_blank" rel="noopener"}) on how to setup and use.
+- Allow zooming out from resolution for users targeting a resolution beyond their screen resolution (i.e., 1080p on Steam Deck)
+- Enable don't fragment for MacOS Big Sur and later for more accurate MTU readings during Senkusha
+- Create a fallback session id when session id isn't received instead of erroring out
+- Workaround patch for vulkan ffmpeg hw decoder bug affecting Nvidia 30 series graphics card users
+- Add additional option for obtaining the PSN AccountId via logging in with your psn username and password (in addition to the public lookup)
+
 ### 1.6.6
 
 Lowers required mtu from 1435 to 576
